@@ -31,6 +31,17 @@
 </head>
 
 <body class="hold-transition login-page">
+    <script>
+      // Verifica login
+      document.addEventListener('DOMContentLoaded', function () {
+        var loggedIn = localStorage.getItem('loggedIn');
+        if (loggedIn == 'true') {
+          // Não há sessão, redirecionar para o login.html
+          window.location.href = 'index.html';
+        }
+      });
+  
+    </script>
     <div class="container">
         <div style="height: 15vh;">
 
@@ -88,7 +99,7 @@
                                 <a href="#RecuperaSenha">Esqueci minha senha</a>
                             </p>
                             <p class="mb-0">
-                                <a href="#Cadastro" class="text-center">Cadastra-se</a>
+                                <a href="./cadastro.html" class="text-center">Cadastra-se</a>
                             </p>
                         </div>
 
