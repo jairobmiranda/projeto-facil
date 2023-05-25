@@ -32,15 +32,15 @@
 
 <body class="hold-transition login-page">
     <script>
-      // Verifica login
-      document.addEventListener('DOMContentLoaded', function () {
-        var loggedIn = localStorage.getItem('loggedIn');
-        if (loggedIn == 'true') {
-          // Não há sessão, redirecionar para o login.html
-          window.location.href = 'index.html';
-        }
-      });
-  
+        // Verifica login
+        document.addEventListener('DOMContentLoaded', function () {
+            var loggedIn = localStorage.getItem('loggedIn');
+            if (loggedIn == 'true') {
+                // Não há sessão, redirecionar para o login.html
+                window.location.href = 'index.html';
+            }
+        });
+
     </script>
     <div class="container">
         <div style="height: 15vh;">
@@ -63,7 +63,7 @@
                             <p class="login-box-msg">Faça login para iniciar sua sessão</p>
                             <form action="./index.html" method="post">
                                 <div class="input-group mb-3">
-                                    <input type="email" class="form-control" placeholder="Email" required>
+                                    <input name="email" type="email" class="form-control" placeholder="Email" required>
                                     <div class="input-group-append">
                                         <div class="input-group-text">
                                             <span class="fas fa-envelope"></span>
@@ -71,7 +71,8 @@
                                     </div>
                                 </div>
                                 <div class="input-group mb-3">
-                                    <input type="password" class="form-control" placeholder="Senha" required>
+                                    <input name="senha" type="password" class="form-control" placeholder="Senha"
+                                        required>
                                     <div class="input-group-append">
                                         <div class="input-group-text">
                                             <span class="fas fa-lock"></span>
@@ -112,12 +113,6 @@
 
 
 
-
-
-
-
-
-
     <!-- SCRIPTS -->
     <!-- jQuery -->
     <script src="./plugins/jquery/jquery.min.js"></script>
@@ -125,6 +120,54 @@
     <script src="./plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="./dist/js/adminlte.min.js"></script>
+    <!-- SPA Complemento -->
+    <script src="./dist/js/SPA-complemento.js"></script>
+    <!-- API -->
+    <script src="./dist/js/API.js"></script>
+    <!-- JS Personalizado -->
+    <script>
+        const btn = document.querySelector("form button");
+        const form = document.querySelector("form");
+        const email = document.querySelector("input[name='email']");
+        const senha = document.querySelector("input[name='senha']");
+
+        //API
+        form.addEventListener('submit', async (event) => {
+            //previne o evento padrão do formulário
+            event.preventDefault();
+            //Coloca botão em estado de 'carregando'
+            btnCarregando(true, btn);
+
+            await fetch(API_URL + '/pessoasLogin', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email : email.value, senha : senha.value })
+            })
+                .then(response => {
+                    return response.json();
+                    /*   if (response.status === 200) {
+                           btnCarregando(false, btn, 'Login');
+                       } else {
+                           if (msgErro) {
+                               alert(msgErro);
+                               btnCarregando(false, btn, 'Login');
+                           }
+                       }    */
+                })
+                .then(data => {
+                    if (data.msgErro) {
+                        alert(data.msgErro);
+                        btnCarregando(false, btn, 'Login');
+                    } else {
+                        alert('Bem vindo ' + data.nome + ' REDIRECIONAMENTO....');
+                        btnCarregando(false, btn, 'Login');
+                    }
+                });
+        });
+    </script>
+
     <!-- Plugin DataTables -->
     <script src="./plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="./plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
