@@ -25,14 +25,15 @@
 <body class="hold-transition sidebar-mini">
   <script>
     // Verifica login
+    /*
     document.addEventListener('DOMContentLoaded', function () {
       var loggedIn = localStorage.getItem('loggedIn');
       if (loggedIn != 'true') {
         // Não há sessão, redirecionar para o login.html
-        window.location.href = 'login.html';
+        window.location.assign('login.html');
       }
     });
-
+*/
   </script>
 
   <div class="wrapper">
@@ -189,6 +190,8 @@
   <script src="./plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
   <!-- SPA -->
   <script src="./dist/js/SPA.js"></script>
+  <!-- SPA Complemento -->
+  <script src="./dist/js/SPA-complemento.js"></script>
   <!-- JS Personalizado -->
   <script src="./dist/js/personalizado.js"></script>
 </body>

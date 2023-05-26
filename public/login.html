@@ -33,6 +33,7 @@
 <body class="hold-transition login-page">
     <script>
         // Verifica login
+        /*
         document.addEventListener('DOMContentLoaded', function () {
             var loggedIn = localStorage.getItem('loggedIn');
             if (loggedIn == 'true') {
@@ -40,7 +41,34 @@
                 window.location.href = 'index.html';
             }
         });
+        */
 
+
+
+        if (localStorage.getItem('user')) {
+            pessoa = JSON.parse(localStorage.getItem('user'));
+
+            if (localStorage.getItem('ultimoLogin')) {
+                const data1 = new Date(localStorage.getItem('ultimoLogin'));
+                const data2 = new Date();
+
+                const diferencaEmMilissegundos = data2.getTime() - data1.getTime();
+                const diferencaEmHoras = parseFloat(diferencaEmMilissegundos) / 1000 / 60 / 60;
+
+
+                if (diferencaEmHoras > 8) {
+                    //localStorage.clear();
+                    //window.location.assign('login.html');
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const email = document.querySelector("input[name='email']");
+                        email.value = pessoa.email;
+                    });
+                } else {
+                    window.location.assign('index.html');
+                }
+            }
+
+        }
     </script>
     <div class="container">
         <div style="height: 15vh;">
@@ -133,39 +161,48 @@
 
         //API
         form.addEventListener('submit', async (event) => {
+            await setTimeout(3000);
             //previne o evento padrão do formulário
             event.preventDefault();
             //Coloca botão em estado de 'carregando'
             btnCarregando(true, btn);
 
+
+            await new Promise(resolve => setTimeout(resolve, 300));
+
             await fetch(API_URL + '/pessoasLogin', {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email : email.value, senha : senha.value })
+                body: JSON.stringify({ email: email.value, senha: senha.value })
             })
                 .then(response => {
                     return response.json();
-                    /*   if (response.status === 200) {
-                           btnCarregando(false, btn, 'Login');
-                       } else {
-                           if (msgErro) {
-                               alert(msgErro);
-                               btnCarregando(false, btn, 'Login');
-                           }
-                       }    */
                 })
                 .then(data => {
+
+
                     if (data.msgErro) {
-                        alert(data.msgErro);
+                        elementoMensagem = document.querySelector("div.card-body");
+                        inserirMsg(elementoMensagem, 'danger', '', data.msgErro);
                         btnCarregando(false, btn, 'Login');
                     } else {
-                        alert('Bem vindo ' + data.nome + ' REDIRECIONAMENTO....');
+                        elementoMensagem = document.querySelector("div.card-body");
+                        inserirMsg(elementoMensagem, 'success', 'Bem vindo ', data.nome);
                         btnCarregando(false, btn, 'Login');
+
+                        //Armazena em localStorage os dados do usuário logado e horário de login
+                        localStorage.setItem('user', JSON.stringify(data));
+                        localStorage.setItem('ultimoLogin', new Date().toISOString());
+
+                        //redirecionamento a página do sistema
+                        window.location.assign('index.html');
                     }
                 });
         });
+
+
     </script>
 
     <!-- Plugin DataTables -->
