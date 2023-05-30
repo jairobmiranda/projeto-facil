@@ -56,15 +56,15 @@
                 const diferencaEmHoras = parseFloat(diferencaEmMilissegundos) / 1000 / 60 / 60;
 
 
-                if (diferencaEmHoras > 8) {
+                if (diferencaEmHoras < 8) {
+                    window.location.assign('index.html');
+                } else {
                     //localStorage.clear();
                     //window.location.assign('login.html');
                     document.addEventListener('DOMContentLoaded', function () {
                         const email = document.querySelector("input[name='email']");
                         email.value = pessoa.email;
                     });
-                } else {
-                    window.location.assign('index.html');
                 }
             }
 
