@@ -34,6 +34,30 @@
       }
     });
 */
+
+    if (localStorage.getItem('user')) {
+      pessoa = JSON.parse(localStorage.getItem('user'));
+
+      if (localStorage.getItem('ultimoLogin')) {
+        const data1 = new Date(localStorage.getItem('ultimoLogin'));
+        const data2 = new Date();
+
+        const diferencaEmMilissegundos = data2.getTime() - data1.getTime();
+        const diferencaEmHoras = parseFloat(diferencaEmMilissegundos) / 1000 / 60 / 60;
+
+
+        if (diferencaEmHoras < 8) {
+          //continua logado
+          document.addEventListener('DOMContentLoaded', function () {
+            nomeDisplay = document.querySelector("div.sidebar div.info spam");
+            nomeDisplay.innerHTML = localStorage.getItem('nomeDisplay');
+          });
+        } else {
+          window.location.assign('login.html');
+        }
+      }
+
+    }
   </script>
 
   <div class="wrapper">
@@ -102,6 +126,11 @@
             <i class="fas fa-expand-arrows-alt"></i>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="localStorage.setItem('ultimoLogin', '2000-00-00T00:00:11.892Z');window.location.href = 'login.html';" role="button">
+            <i class="fas fa-sign-out"> SAIR</i>
+          </a>
+        </li>
       </ul>
     </nav>
     <!-- /.navbar -->
@@ -119,7 +148,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="info">
-            <a href="#" class="d-block">Fulano de Tal</a>
+            <a href="#" class="d-block"><i class="fa fa-user" aria-hidden="true"></i><spam class="ml-2"></spam></a>
           </div>
         </div>
 
