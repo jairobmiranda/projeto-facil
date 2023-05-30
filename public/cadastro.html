@@ -245,8 +245,6 @@
                     retorno = false;
                     dataNascimento.classList.remove("is-valid");
                     dataNascimento.classList.add("is-invalid");
-                    retorno = false;
-                    /*return false;*/
                 } else {
                     // Cria uma nova data no formato ISO 8601
                     dataNascimentoVALOR = new Date(`${ano}-${mes}-${dia}T00:00:00.000Z`);
@@ -305,10 +303,10 @@
 
             await new Promise(resolve => setTimeout(resolve, 300));
 
-            if (validacaoDados() == false) {
+            if (validacaoDados() === false) {
                 // Falha na validação de algum dado
                 // Volta o botão em estado normal
-                btnCarregando(true, btn);
+                btnCarregando(false, btn, 'Registrar');
             } else {
                 // Validação 0K
                 await fetch(API_URL + '/pessoas', {
@@ -336,15 +334,18 @@
                             btnCarregando(false, btn, 'Registrar');
                         } else {
                             elementoMensagem = document.querySelector("div.card-body div.row");
-                            inserirMsg(elementoMensagem, 'success', 'Cadastrado!', data.nome);
-                            btnCarregando(false, btn, 'Registrar');
+                            elementoMensagem.innerHTML = '';
+                            inserirMsg(elementoMensagem, 'success', 'Cadastrado com sucesso!', data.nome);
+                            //btnCarregando(true, btn);
 
                             //Armazena em localStorage os dados do usuário logado e horário de login
                             localStorage.setItem('user', JSON.stringify(data));
                             localStorage.setItem('ultimoLogin', '2000-00-00T00:00:11.892Z');
 
                             //redirecionamento a página do sistema
-                            window.location.assign('login.html');
+                            setTimeout(() => {
+                                window.location.assign('login.html');
+                            }, 2000);
                         }
                     });
             }
