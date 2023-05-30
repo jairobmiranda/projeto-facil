@@ -42,7 +42,8 @@
                 <p class="login-box-msg">Realize seu cadastro</p>
                 <form action="./login.html" method="post">
                     <div class="input-group mb-3">
-                        <input name="nome" type="text" class="form-control" placeholder="Nome completo" required>
+                        <input name="nome" onblur="validacaoDados();" type="text" class="form-control"
+                            placeholder="Nome completo" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-user"></span>
@@ -50,7 +51,8 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input name="cpf" type="tel" class="form-control" placeholder="CPF" maxlength="14" required>
+                        <input name="cpf" onblur="validacaoDados();" type="tel" class="form-control" placeholder="CPF"
+                            maxlength="14" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-list-alt"></span>
@@ -58,8 +60,8 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input name="dataNascimento" type="tel" class="form-control" placeholder="Data de nascimento" maxlength="10"
-                            required>
+                        <input name="dataNascimento" onblur="validacaoDados();" type="tel" class="form-control"
+                            placeholder="Data de nascimento" maxlength="10" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fa fa-calendar"></span>
@@ -67,7 +69,8 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input name="email" type="email" class="form-control" placeholder="Email" required>
+                        <input name="email" onblur="validacaoDados();" type="email" class="form-control"
+                            placeholder="Email" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -83,7 +86,8 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="Repita a senha" required>
+                        <input name="repeteSenha" onblur="validacaoDados();" type="password" class="form-control"
+                            placeholder="Repita a senha" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -93,7 +97,7 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="icheck-primary">
-                                <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                                <input type="checkbox" id="agreeTerms" name="terms" value="agree" required>
                                 <label for="agreeTerms">
                                     Eu concordo com os <a href="#">termos</a>
                                 </label>
@@ -129,6 +133,10 @@
     <script src="./plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="./dist/js/adminlte.min.js"></script>
+    <!-- SPA Complemento -->
+    <script src="./dist/js/SPA-complemento.js"></script>
+    <!-- API -->
+    <script src="./dist/js/API.js"></script>
     <!-- Plugin DataTables -->
     <script src="./plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="./plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -140,7 +148,7 @@
     <script src="./plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="./plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-    <!-- Personalizado -->
+    <!-- JS Máscara do form -->
     <script>
         // Seleciona o input com id "cpf"
         const cpfInput = document.querySelector('input[name="cpf"]');
@@ -180,6 +188,172 @@
         }
 
     </script>
+
+    <!-- JS API -->
+    <script>
+        var dataNascimentoVALOR = null;
+        const btn = document.querySelector("form button");
+        const form = document.querySelector("form");
+        const nome = document.querySelector("input[name='nome']");
+        const cpf = document.querySelector("input[name='cpf']");
+        const dataNascimento = document.querySelector("input[name='dataNascimento']");
+        const email = document.querySelector("input[name='email']");
+        const senha = document.querySelector("input[name='senha']");
+        const repeteSenha = document.querySelector("input[name='repeteSenha']");
+
+
+
+        // Tratamento e validação dos dados
+        function validacaoDados() {
+            retorno = true;
+
+            //Nome
+            if (nome.value == '') { }
+            else if (nome.value.trim().includes(" ")) {
+                nome.classList.remove("is-invalid");
+                nome.classList.add("is-valid");
+            } else {
+                nome.classList.remove("is-valid");
+                nome.classList.add("is-invalid");
+                retorno = false;
+            }
+
+            //CPF
+            if (cpf.value == '') { }
+            else if (cpf.value.length < 14) {
+                cpf.classList.remove("is-valid");
+                cpf.classList.add("is-invalid");
+                retorno = false;
+            } else {
+                cpf.classList.remove("is-invalid");
+                cpf.classList.add("is-valid");
+            }
+
+            // dataNascimento
+            if (dataNascimento.value != '') {
+                const partesData = dataNascimento.value.split('/'); // Divide a string da data em partes
+                const dia = partesData[0];
+                const mes = partesData[1];
+                const ano = partesData[2];
+                if (
+                    parseInt(dia) < 1 ||
+                    parseInt(dia) > 31 ||
+                    parseInt(mes) < 1 ||
+                    parseInt(mes) > 12
+                ) {
+                    // Data Inválida
+                    retorno = false;
+                    dataNascimento.classList.remove("is-valid");
+                    dataNascimento.classList.add("is-invalid");
+                    retorno = false;
+                    /*return false;*/
+                } else {
+                    // Cria uma nova data no formato ISO 8601
+                    dataNascimentoVALOR = new Date(`${ano}-${mes}-${dia}T00:00:00.000Z`);
+                    dataNascimentoVALOR = dataNascimentoVALOR.toISOString();
+                    dataNascimento.classList.remove("is-invalid");
+                    dataNascimento.classList.add("is-valid");
+                }
+            }
+
+            //Email
+            if (email.value != '') {
+                var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (regex.test(email.value)) {
+                    email.classList.remove("is-invalid");
+                    email.classList.add("is-valid");
+                } else {
+                    email.classList.remove("is-valid");
+                    email.classList.add("is-invalid");
+                    retorno = false;
+                }
+            }
+
+            // Senha
+            if (senha.value != '' && repeteSenha.value != '') {
+                if (senha.value != repeteSenha.value) {
+                    // Senhas divergentes
+                    retorno = false;
+                    senha.classList.remove("is-valid");
+                    senha.classList.add("is-invalid");
+                    repeteSenha.classList.remove("is-valid");
+                    repeteSenha.classList.add("is-invalid");
+                    retorno = false;
+                } else {
+                    senha.classList.remove("is-invalid");
+                    senha.classList.add("is-valid");
+                    repeteSenha.classList.remove("is-invalid");
+                    repeteSenha.classList.add("is-valid");
+                }
+            }
+
+            // CPF
+            cpfVALOR = cpf.value.replace(/[.-]/g, "");
+
+            return retorno;
+        }
+
+        // API
+        form.addEventListener('submit', async (event) => {
+            // Previne o evento padrão do formulário
+            event.preventDefault();
+            // Coloca botão em estado de 'carregando'
+            btnCarregando(true, btn);
+
+            // chama a função de validao dos dados
+
+
+            await new Promise(resolve => setTimeout(resolve, 300));
+
+            if (validacaoDados() == false) {
+                // Falha na validação de algum dado
+                // Volta o botão em estado normal
+                btnCarregando(true, btn);
+            } else {
+                // Validação 0K
+                await fetch(API_URL + '/pessoas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nome: nome.value,
+                        cpf: cpfVALOR,
+                        dataNascimento: dataNascimentoVALOR,
+                        email: email.value,
+                        senha: senha.value
+                    })
+                })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+
+
+                        if (data.msgErro) {
+                            elementoMensagem = document.querySelector("div.card-body div.row");
+                            inserirMsg(elementoMensagem, 'danger', '', data.msgErro);
+                            btnCarregando(false, btn, 'Registrar');
+                        } else {
+                            elementoMensagem = document.querySelector("div.card-body div.row");
+                            inserirMsg(elementoMensagem, 'success', 'Cadastrado!', data.nome);
+                            btnCarregando(false, btn, 'Registrar');
+
+                            //Armazena em localStorage os dados do usuário logado e horário de login
+                            localStorage.setItem('user', JSON.stringify(data));
+                            localStorage.setItem('ultimoLogin', '2000-00-00T00:00:11.892Z');
+
+                            //redirecionamento a página do sistema
+                            window.location.assign('login.html');
+                        }
+                    });
+            }
+
+        });
+
+
+    </script>
+
 </body>
 
 </html>
