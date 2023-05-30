@@ -161,14 +161,13 @@
 
         //API
         form.addEventListener('submit', async (event) => {
-            await setTimeout(3000);
             //previne o evento padrão do formulário
             event.preventDefault();
             //Coloca botão em estado de 'carregando'
             btnCarregando(true, btn);
 
 
-            await new Promise(resolve => setTimeout(resolve, 300));
+            await new Promise(resolve => setTimeout(resolve, 500));
 
             await fetch(API_URL + '/pessoasLogin', {
                 method: 'POST',
@@ -195,6 +194,11 @@
                         //Armazena em localStorage os dados do usuário logado e horário de login
                         localStorage.setItem('user', JSON.stringify(data));
                         localStorage.setItem('ultimoLogin', new Date().toISOString());
+
+                        //Armazena em localStorage o nome abreviado a ser exibido na página principal
+                        const nomes = data.nome.split(" ");
+                        const nomeDisplay = nomes[0] + ' ' + nomes[nomes.length - 1];
+                        localStorage.setItem('nomeDisplay', nomeDisplay);
 
                         //redirecionamento a página do sistema
                         window.location.assign('index.html');

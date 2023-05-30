@@ -210,6 +210,10 @@
             //Nome
             if (nome.value == '') { }
             else if (nome.value.trim().includes(" ")) {
+                nomeSplit = nome.value.split(" ");
+                nomeCapitalizado = nomeSplit.map(nomeSplit => nomeSplit.charAt(0).toUpperCase() + nomeSplit.slice(1));
+                nome.value = nomeCapitalizado.join(" ");
+                
                 nome.classList.remove("is-invalid");
                 nome.classList.add("is-valid");
             } else {
