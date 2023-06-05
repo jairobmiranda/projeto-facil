@@ -1,0 +1,110 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Equipes</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6 text-right">
+                <button class="btn btn-sm btn-outline-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-calendar">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    Opção
+                </button>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<!-- Main content -->
+<div class="content ml-2 mr-2">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+
+                <div class="card card-primary">
+                    <div class="card-header bg-projeto-light">
+                        <h3 class="card-title">Criar Equipe</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Horas trabalhadas hoje:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                </div>
+                                <input type="text" class="form-control" id="totalHorasHoje" value="00:00:00" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Horas trabalhadas na semana:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                </div>
+                                <input type="text" class="form-control" id="totalHorasHoje" value="00:00:00" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card card-secondary card-iniciarContagemHoras">
+                    <div class="card-header">
+                        <h3 class="card-title">Iniciar Atividade</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
+                            </div>
+                            <input type="text" class="form-control projetoNome" placeholder="Nome do projeto"
+                                aria-label="Pesquisar" aria-describedby="basic-addon1" disabled>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-tasks"></i></span>
+                            </div>
+                            <input type="text" class="form-control atividadeNome" placeholder="Atividade"
+                                aria-label="Pesquisar" aria-describedby="basic-addon1" disabled>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control tempoAtv" placeholder="00:00:00"
+                                        aria-label="Pesquisar" aria-describedby="basic-addon1" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control codAtv" placeholder="Cód Atividade"
+                                        aria-label="Pesquisar" aria-describedby="basic-addon1">
+                                    <span class="input-group-append">
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="iniciarContagem();">Iniciar</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content -->

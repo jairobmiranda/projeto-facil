@@ -22,13 +22,22 @@
     <div class="row">
       <div class="col-sm-6">
 
-        <div class="card">
+        <div class="card card-primary">
           <div class="card-header bg-projeto-light">
-            <h4 id="data-atual">../../...</h4>
+            <h3 class="card-title" id="data-atual">../../...</h3>
           </div>
           <div class="card-body">
             <div class="form-group">
-              <label>Total de horas trabalhadas hoje:</label>
+              <label>Horas trabalhadas hoje:</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                </div>
+                <input type="text" class="form-control" id="totalHorasHoje" value="00:00:00" disabled>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Horas trabalhadas na semana:</label>
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-clock"></i></span>
@@ -40,7 +49,10 @@
         </div>
       </div>
       <div class="col-sm-6">
-        <div class="card card-iniciarContagemHoras">
+        <div class="card card-secondary card-iniciarContagemHoras">
+          <div class="card-header">
+            <h3 class="card-title">Iniciar Atividade</h3>
+          </div>
           <div class="card-body">
             <div class="input-group mb-3">
               <div class="input-group-prepend">
