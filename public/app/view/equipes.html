@@ -30,10 +30,10 @@
 
                 <div class="card card-primary">
                     <div class="card-header bg-projeto-light">
-                        <h3 class="card-title">Criar Equipe</h3>
+                        <h3 class="card-title">title</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
+                                <i class="fas fa-plus"></i>
                             </button>
                         </div>
                     </div>
@@ -60,46 +60,26 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <div class="card card-secondary card-iniciarContagemHoras">
+                <div class="card card-secondary card-iniciarContagemHoras"><!-- collapsed-card-->
                     <div class="card-header">
-                        <h3 class="card-title">Iniciar Atividade</h3>
+                        <h3 class="card-title">Criar/Editar Equipe</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
+                                <span class="input-group-text"><i class="fa fa-people-group"></i></span>
                             </div>
-                            <input type="text" class="form-control projetoNome" placeholder="Nome do projeto"
+                            <input type="text" class="form-control projetoNome" placeholder="Nome da equipe"
                                 aria-label="Pesquisar" aria-describedby="basic-addon1" disabled>
                         </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-tasks"></i></span>
-                            </div>
-                            <input type="text" class="form-control atividadeNome" placeholder="Atividade"
-                                aria-label="Pesquisar" aria-describedby="basic-addon1" disabled>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-clock"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control tempoAtv" placeholder="00:00:00"
-                                        aria-label="Pesquisar" aria-describedby="basic-addon1" disabled>
-                                </div>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control codAtv" placeholder="Cód Atividade"
-                                        aria-label="Pesquisar" aria-describedby="basic-addon1">
-                                    <span class="input-group-append">
-                                        <button type="button" class="btn btn-primary"
-                                            onclick="iniciarContagem();">Iniciar</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-secondary float-right">Salvar</button>
                     </div>
                 </div>
             </div>
