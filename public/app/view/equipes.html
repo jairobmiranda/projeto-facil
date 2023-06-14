@@ -27,10 +27,42 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-
-                <div class="card card-primary">
+                <div class="card card-primary card-iniciarContagemHoras"><!-- collapsed-card-->
+                    <div class="card-header">
+                        <h3 class="card-title">Criar/Editar Equipe</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-people-group"></i></span>
+                            </div>
+                            <input type="text" class="form-control projetoNome" placeholder="Nome da equipe"
+                                aria-label="Pesquisar" aria-describedby="basic-addon1">
+                        </div>
+                        <label for="exampleInputEmail1">Membros:</label>
+                        1primeirotikj
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-people-group"></i></span>
+                            </div>
+                            <input type="text" class="form-control projetoNome" placeholder="Nome da equipe"
+                                aria-label="Pesquisar" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary float-right">Salvar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card card-secondary">
                     <div class="card-header bg-projeto-light">
-                        <h3 class="card-title">title</h3>
+                        <h3 class="card-title">Minhas Equipes</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-plus"></i>
@@ -56,30 +88,6 @@
                                 <input type="text" class="form-control" id="totalHorasHoje" value="00:00:00" disabled>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="card card-secondary card-iniciarContagemHoras"><!-- collapsed-card-->
-                    <div class="card-header">
-                        <h3 class="card-title">Criar/Editar Equipe</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-people-group"></i></span>
-                            </div>
-                            <input type="text" class="form-control projetoNome" placeholder="Nome da equipe"
-                                aria-label="Pesquisar" aria-describedby="basic-addon1" disabled>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-secondary float-right">Salvar</button>
                     </div>
                 </div>
             </div>
