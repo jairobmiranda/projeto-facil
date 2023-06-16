@@ -22,13 +22,22 @@
     <div class="row">
       <div class="col-sm-6">
 
-        <div class="card">
+        <div class="card card-primary">
           <div class="card-header bg-projeto-light">
-            <h4 id="data-atual">../../...</h4>
+            <h3 class="card-title" id="data-atual">../../...</h3>
           </div>
           <div class="card-body">
             <div class="form-group">
-              <label>Total de horas trabalhadas hoje:</label>
+              <label>Horas trabalhadas hoje:</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-clock"></i></span>
+                </div>
+                <input type="text" class="form-control" id="totalHorasHoje" value="00:00:00" disabled>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Horas trabalhadas na semana:</label>
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fa fa-clock"></i></span>
@@ -40,7 +49,10 @@
         </div>
       </div>
       <div class="col-sm-6">
-        <div class="card card-iniciarContagemHoras">
+        <div class="card card-secondary card-iniciarContagemHoras">
+          <div class="card-header">
+            <h3 class="card-title">Iniciar Atividade</h3>
+          </div>
           <div class="card-body">
             <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -130,40 +142,11 @@
 </div>
 <!-- /.content -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- JavaScript do Projeto -->
 <script>
   //Definindo os elementos principais
   const atvBtn = document.querySelector("#inicio .card-iniciarContagemHoras .btn");
-  const nomeProjeto = document.querySelector("#inicio .card-iniciarContagemHoras .projetoNome");
+  const nomeProjetoIniciarAtividade = document.querySelector("#inicio .card-iniciarContagemHoras .projetoNome");
   const codAtv = document.querySelector("#inicio .card-iniciarContagemHoras .codAtv");
   const nomeAtv = document.querySelector("#inicio .card-iniciarContagemHoras .atividadeNome");
   const tempoAtv = document.querySelector("#inicio .card-iniciarContagemHoras .tempoAtv");
@@ -184,7 +167,7 @@
         //Salva o horário que começou a atividade
         atividadeIniciada = dataHoraAtual();
         projeto = dados[0].projetos.find(p => p.id == atividade.projeto).nome;
-        nomeProjeto.value = projeto;
+        nomeProjetoIniciarAtividade.value = projeto;
         nomeAtv.value = atividade.nome;
         codAtv.disabled = true;
         atvBtn.innerHTML = 'Parar';
@@ -197,7 +180,7 @@
     } else {
       stopTimer(atividadeIniciada); //para a contagem do tempo
       atividadeIniciada = null;
-      nomeProjeto.value = '';
+      nomeProjetoIniciarAtividade.value = '';
       nomeAtv.value = '';
       codAtv.disabled = false;
       atvBtn.innerHTML = 'Iniciar';
@@ -371,22 +354,6 @@
     //Inserindo valores conforme padrão do plugin DataTables
     tbHistorico = $('#tbHistorico').DataTable();
     tbHistorico.row.add([codp, atividadep, dataInip, dataFimp, tempoTp]).draw(false);
-
-    /*
-    linha = tabela.insertRow(1);
-
-    cod = linha.insertCell(0);
-    atividade = linha.insertCell(1);
-    dataIni = linha.insertCell(2);
-    dataFim = linha.insertCell(3);
-    tempoT = linha.insertCell(4);
-
-    cod.innerHTML = codp;
-    atividade.innerHTML = atividadep;
-    dataIni.innerHTML = dataInip;
-    dataFim.innerHTML = dataFimp;
-    tempoT.innerHTML = tempoTp;
-    */
   }
 
   atividadesStr = '{ "PI":"Projeto Integrador", "AP":"Apresentação do Projeto" }';

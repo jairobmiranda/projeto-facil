@@ -3,17 +3,29 @@
     "title": "Início",
     "icon": "fas fa-home",
     "link": "#inicio",
-    "msg": "New"
+    "msg": ""
   },
   {
-    "title": "Configuração",
-    "icon": "fas fa-clock",
-    "link": "#config",
+    "title": "Atividades",
+    "icon": "fas fa-tasks",
+    "link": "#atividades",
+    "msg": null
+  },
+  {
+    "title": "Projetos",
+    "icon": "fas fa-folder",
+    "link": "#projetos",
+    "msg": null
+  },
+  {
+    "title": "Equipes",
+    "icon": "fas fa-people-group",
+    "link": "#equipes",
     "msg": null
   },
   {
     "title": "Relatórios",
-    "icon": "fas fa-file",
+    "icon": "fas fa-file-lines",
     "link": "#",
     "subitems": [
       {
@@ -32,5 +44,11 @@
         "msg": null
       }
     ]
+  },
+  {
+    "title": "Configuração",
+    "icon": "fas fa-cog",
+    "link": "#config",
+    "msg": "Em breve"
   }
 ]
