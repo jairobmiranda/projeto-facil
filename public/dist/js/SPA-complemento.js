@@ -42,3 +42,25 @@ function inserirMsg(elementGet, tipo, msgTitulo, msg) {
         + '</div>';
     elementGet.innerHTML = msgHTML;
 }
+
+
+//Controle de abre e fecha Card
+function abreCard(elemento, opcao) {
+    //opcao: true abrir, false fechar
+    
+    var comoEsta = true; //fechado
+
+    if (elemento.innerHTML.includes('minus') == true) {
+        //Card está aberto
+        comoEsta = false;
+    }
+
+    
+    if(opcao == true && comoEsta == true){
+        //Abre o card
+        elemento.click();
+    } else if(opcao == false && comoEsta == false){
+        //Fecha o card
+        elemento.click();
+    }
+}

@@ -32,19 +32,6 @@
 
 <body class="hold-transition login-page">
     <script>
-        // Verifica login
-        /*
-        document.addEventListener('DOMContentLoaded', function () {
-            var loggedIn = localStorage.getItem('loggedIn');
-            if (loggedIn == 'true') {
-                // Não há sessão, redirecionar para o login.html
-                window.location.href = 'index.html';
-            }
-        });
-        */
-
-
-
         if (localStorage.getItem('user')) {
             pessoa = JSON.parse(localStorage.getItem('user'));
 
@@ -59,8 +46,6 @@
                 if (diferencaEmHoras < 8) {
                     window.location.assign('index.html');
                 } else {
-                    //localStorage.clear();
-                    //window.location.assign('login.html');
                     document.addEventListener('DOMContentLoaded', function () {
                         const email = document.querySelector("input[name='email']");
                         email.value = pessoa.email;
