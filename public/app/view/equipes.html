@@ -46,7 +46,8 @@
                             </div>
                             <input name="email" type="email" class="form-control" placeholder="Email">
                             <span class="input-group-append">
-                                <button type="button" class="btn btn-block btn-outline-primary" onclick="BtnAdicionaMembro();">Convidar</button>
+                                <button type="button" class="btn btn-block btn-outline-primary"
+                                    onclick="BtnAdicionaMembroEquipe();">Convidar</button>
                             </span>
                         </div>
                     </div>
@@ -66,111 +67,195 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
-                            <label>Horas trabalhadas hoje:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
-                                </div>
-                                <input type="text" class="form-control" id="totalHorasHoje" value="00:00:00" disabled>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Horas trabalhadas na semana:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-clock"></i></span>
-                                </div>
-                                <input type="text" class="form-control" id="totalHorasHoje" value="00:00:00" disabled>
-                            </div>
-                        </div>
+                        <table id="tbEquipes" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nome da Equipe</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>001</td>
+                                    <td>Atividade XXX</td>
+                                </tr>
+                                <tr>
+                                    <td>002</td>
+                                    <td>Atividade XYZ</td>
+                                </tr>
+                                <tr>
+                                    <td>003</td>
+                                    <td>Atividade X50</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
-<!-- /.content -->
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
 
-<!-- JS-->
+    <!-- JS-->
+    <script>
+        const divlistaMembrosEquipe = document.querySelector("#equipes div.lista-membros");
+        const tituloCardEquipe = document.querySelector("#equipes h3.card-title");
+        const btnSalvarEquipe = document.querySelector("#equipes div.card-footer button");
+        const nomeEquipe = document.querySelector("#equipes input.nomeEquipe");
+        const listaMembrosEquipe = document.querySelector("#equipes div.lista-membros");
+        const btnAbreCardEquipe = document.querySelector('#equipes div.card-header button');
+        const btnConvidaMembroEquipe = document.querySelector("#equipes div.card-body button");
+        const emailMembroEquipe = document.querySelector("#equipes input[name='email']");
+
+        function InsereMembroEquipe(titulo, tipo, botaoX) {
+            switch (tipo) {
+                case 'primary':
+                    tipoMsg = 'Líder';
+                    break;
+                case 'warning':
+                    tipoMsg = 'Aguardando Aceitar';
+                    break;
+                case 'secondary':
+                    tipoMsg = 'Membro';
+                    break;
+                case 'danger':
+                    tipoMsg = 'Recusado';
+                    break;
+            }
+            if (botaoX) {
+                botaoX = '<div class="card-tools">  <button type="button" class="btn btn-tool" data-card-widget="remove"> <i class="fas fa-times"></i> </button> </div>';
+            } else { botaoX = ''; }
+            const htmlBase = ' <div class="card card-widget collapsed-card"> <div class="card-header"> <div class="user-block"> <img class="img-circle" src="data:image/jpeg;base64,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"> <span class="username"><a href="#">' + titulo + '</a></span> <span class="description badge bg-' + tipo + '">' + tipoMsg + '</span> </div> ' + botaoX + ' </div> </div>';
+            divlistaMembrosEquipe.innerHTML += htmlBase;
+        }
+
+        function CriarEquipe() {
+
+            abreCard(btnAbreCardEquipe, true);
+
+            listaMembrosEquipe.innerHTML = '';
+
+            tituloCardEquipe.innerHTML = 'Criar Equipe';
+            btnSalvarEquipe.innerHTML = 'Salvar';
+
+            InsereMembroEquipe(localStorage.getItem('nomeDisplay'), 'primary', false);
+
+            nomeEquipe.focus();
+        }
+
+        function BtnAdicionaMembroEquipe() {
+
+            btnCarregando(true, btnConvidaMembroEquipe);
+
+            //Validação do email
+            deuErro = true;
+            if (emailMembroEquipe.value != '') {
+                var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (regex.test(emailMembroEquipe.value)) {
+                    deuErro = false;
+                    emailMembroEquipe.classList.remove("is-invalid");
+                } else {
+                    emailMembroEquipe.classList.add("is-invalid");
+                }
+
+                if (deuErro == false) {
+                    InsereMembroEquipe(emailMembroEquipe.value, 'warning', true);
+                }
+            }
+
+            btnCarregando(false, btnConvidaMembroEquipe, 'Convidar');
+            emailMembroEquipe.value = '';
+            emailMembroEquipe.focus();
+        }
+
+        emailMembroEquipe.addEventListener("keydown", function (event) {
+            if (event.keyCode === 13) {
+                BtnAdicionaMembroEquipe();
+            }
+        });
+
+        /* Deixa card aberto enquanto edito */
+        document.querySelector('#equipes div.card-header button').click();
+    </script>
+
+    <!-- DataTable -->
 <script>
-    const divListaMembros = document.querySelector("#equipes div.lista-membros");
-    const tituloCard = document.querySelector("#equipes h3.card-title");
-    const btn = document.querySelector("#equipes div.card-footer button");
-    const nomeEquipe = document.querySelector("#equipes input.nomeEquipe");
-    const listaMembros = document.querySelector("#equipes div.lista-membros");
-    const btnAbreCard = document.querySelector('#equipes div.card-header button');
-    const btnConvida = document.querySelector("#equipes div.card-body button");
-    const emailMembro = document.querySelector("#equipes input[name='email']");
-
-    function InsereMembro(titulo, tipo, botaoX) {
-        switch (tipo) {
-            case 'primary':
-                tipoMsg = 'Líder';
-                break;
-            case 'warning':
-                tipoMsg = 'Aguardando Aceitar';
-                break;
-            case 'secondary':
-                tipoMsg = 'Membro';
-                break;
-            case 'danger':
-                tipoMsg = 'Recusado';
-                break;
-        }
-        if (botaoX) {
-            botaoX = '<div class="card-tools">  <button type="button" class="btn btn-tool" data-card-widget="remove"> <i class="fas fa-times"></i> </button> </div>';
-        } else { botaoX = ''; }
-        const htmlBase = ' <div class="card card-widget collapsed-card"> <div class="card-header"> <div class="user-block"> <img class="img-circle" src="data:image/jpeg;base64,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"> <span class="username"><a href="#">' + titulo + '</a></span> <span class="description badge bg-' + tipo + '">' + tipoMsg + '</span> </div> ' + botaoX + ' </div> </div>';
-        divListaMembros.innerHTML += htmlBase;
-    }
-
-    function CriarEquipe() {
-
-        abreCard(btnAbreCard, true);
-
-        listaMembros.innerHTML = '';
-
-        tituloCard.innerHTML = 'Criar Equipe';
-        btn.innerHTML = 'Salvar';
-
-        InsereMembro(localStorage.getItem('nomeDisplay'), 'primary', false);
-
-        nomeEquipe.focus();
-    }
-
-    function BtnAdicionaMembro() {
-
-        btnCarregando(true, btnConvida);
-
-        //Validação do email
-        deuErro = true;
-        if (emailMembro.value != '') {
-            var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (regex.test(emailMembro.value)) {
-                deuErro = false;
-                emailMembro.classList.remove("is-invalid");
-            } else {
-                emailMembro.classList.add("is-invalid");
+    // Ativar RowReorder por padrão
+    $.fn.dataTable.defaults.rowReorder = true;
+  
+    $(document).ready(function () {
+      var tbHistorico = $('#tbEquipes').DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "pagingType": "full_numbers",
+        "language": {
+          "search": "Pesquisar",
+          "zeroRecords": "Nenhum dado encontrado.",
+          "info": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+          "infoEmpty": "Mostrando 0 até 0 de 0 registros",
+          "infoFiltered": "(Filtrados de _MAX_ registros)",
+          "infoThousands": ".",
+          "loadingRecords": "Carregando...",
+          "processing": "Processando...",
+          "paginate": {
+            "first": '<i class="fas fa-angle-double-left"></i>',
+            "last": '<i class="fas fa-angle-double-right"></i>',
+            "previous": '<i class="fas fa-angle-left"></i>',
+            "next": '<i class="fas fa-angle-right"></i>',
+          },
+          "buttons": {
+            "pageLength": {
+              _: "Mostrar %d linhas",
+              '-1': "Todas as linhas"
             }
-
-            if (deuErro == false) {
-                InsereMembro(emailMembro.value, 'warning', true);
+          }
+        },
+        "order": [
+          [4, "asc"]
+        ],
+        "buttons": {
+          buttons: [{
+            extend: 'pageLength',
+            className: 'btn btn-primary btn-sm',
+            dropup: true
+          },
+          {
+            extend: 'copy',
+            className: 'btn btn-warning btn-sm'
+          },
+          {
+            extend: 'excel',
+            className: 'btn btn-default btn-sm'
+          },
+          {
+            text: 'My button',
+            className: 'btn btn-outline-secondary btn-sm',
+            titleAttr: 'Add a new record',
+            action: function (e, dt, node, config) {
+              alert('Button activated');
             }
+          },
+          {
+            text: '<i class="fa fa-plus"></i>',
+            className: 'btn btn-outline-danger btn-sm',
+            titleAttr: 'Add a new record',
+            action: function (e, dt, node, config) {
+              window.location.href = "data.html";
+            }
+          }
+          ],
+          dom: {
+            button: {
+              className: 'btn'
+            }
+          }
+        },
+        initComplete: function () {
+          var btns = $('.btn-group');
+          btns.addClass('dropup');
         }
-        
-        btnCarregando(false, btnConvida, 'Convidar');
-        emailMembro.value = '';
-        emailMembro.focus();
-    }
-
-    emailMembro.addEventListener("keydown", function (event) {
-        if (event.keyCode === 13) {
-            BtnAdicionaMembro();
-        }
+      });
     });
-
-    /* Deixa card aberto enquanto edito */
-    document.querySelector('#equipes div.card-header button').click();
-</script>
+  </script>
