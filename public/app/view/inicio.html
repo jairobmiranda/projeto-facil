@@ -146,7 +146,7 @@
 <script>
   //Definindo os elementos principais
   const atvBtn = document.querySelector("#inicio .card-iniciarContagemHoras .btn");
-  const nomeProjeto = document.querySelector("#inicio .card-iniciarContagemHoras .projetoNome");
+  const nomeProjetoIniciarAtividade = document.querySelector("#inicio .card-iniciarContagemHoras .projetoNome");
   const codAtv = document.querySelector("#inicio .card-iniciarContagemHoras .codAtv");
   const nomeAtv = document.querySelector("#inicio .card-iniciarContagemHoras .atividadeNome");
   const tempoAtv = document.querySelector("#inicio .card-iniciarContagemHoras .tempoAtv");
@@ -167,7 +167,7 @@
         //Salva o horário que começou a atividade
         atividadeIniciada = dataHoraAtual();
         projeto = dados[0].projetos.find(p => p.id == atividade.projeto).nome;
-        nomeProjeto.value = projeto;
+        nomeProjetoIniciarAtividade.value = projeto;
         nomeAtv.value = atividade.nome;
         codAtv.disabled = true;
         atvBtn.innerHTML = 'Parar';
@@ -180,7 +180,7 @@
     } else {
       stopTimer(atividadeIniciada); //para a contagem do tempo
       atividadeIniciada = null;
-      nomeProjeto.value = '';
+      nomeProjetoIniciarAtividade.value = '';
       nomeAtv.value = '';
       codAtv.disabled = false;
       atvBtn.innerHTML = 'Iniciar';
