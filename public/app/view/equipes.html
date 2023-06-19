@@ -6,7 +6,7 @@
                 <h1 class="m-0">Equipes</h1>
             </div><!-- /.col -->
             <div class="col-sm-6 text-right">
-                <button class="btn btn-sm btn-outline-secondary" onclick="CriarEquipe()">
+                <button class="btn btn-sm btn-outline-secondary" onclick="criarEquipe()">
                     <i class="fas fa-plus"></i>
                     Nova Equipe
                 </button>
@@ -47,12 +47,13 @@
                             <input name="email" type="email" class="form-control" placeholder="Email">
                             <span class="input-group-append">
                                 <button type="button" class="btn btn-block btn-outline-primary"
-                                    onclick="BtnAdicionaMembroEquipe();">Convidar</button>
+                                    onclick="convidarMembroEquipe();">Convidar</button>
                             </span>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary float-right">Salvar</button>
+                        <button type="submit" onclick="salvarEquipe();" class="btn btn-primary float-right"
+                            disabled>Salvar</button>
                     </div>
                 </div>
             </div>
@@ -67,7 +68,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <table id="tbEquipes" class="table table-bordered table-striped">
+                        <table id="tbEquipes" class="table tabelaLink table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -75,18 +76,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>001</td>
-                                    <td>Atividade XXX</td>
-                                </tr>
-                                <tr>
-                                    <td>002</td>
-                                    <td>Atividade XYZ</td>
-                                </tr>
-                                <tr>
-                                    <td>003</td>
-                                    <td>Atividade X50</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -101,14 +90,133 @@
     <script>
         const divlistaMembrosEquipe = document.querySelector("#equipes div.lista-membros");
         const tituloCardEquipe = document.querySelector("#equipes h3.card-title");
-        const btnSalvarEquipe = document.querySelector("#equipes div.card-footer button");
+        const btnsalvarEquipe = document.querySelector("#equipes div.card-footer button");
         const nomeEquipe = document.querySelector("#equipes input.nomeEquipe");
         const listaMembrosEquipe = document.querySelector("#equipes div.lista-membros");
         const btnAbreCardEquipe = document.querySelector('#equipes div.card-header button');
         const btnConvidaMembroEquipe = document.querySelector("#equipes div.card-body button");
         const emailMembroEquipe = document.querySelector("#equipes input[name='email']");
+        var vetorMembrosEquipe = [];
+        var idEquipeEquipe = null;
+        var idDataTableRow = null;
 
-        function InsereMembroEquipe(titulo, tipo, botaoX) {
+
+        function criarEquipe() {
+            //Zera o index da linha
+            idDataTableRow = 0;
+
+            //Zera o vetor
+            vetorMembrosEquipe = [];
+            idEquipeEquipe = null;
+
+            //Prepara o card
+            nomeEquipe.disabled = false;
+            btnsalvarEquipe.disabled = false;
+            emailMembroEquipe.disabled = false;
+            abreCard(btnAbreCardEquipe, true);
+            listaMembrosEquipe.innerHTML = '';
+            tituloCardEquipe.innerHTML = 'Criar Equipe';
+            btnsalvarEquipe.innerHTML = 'Salvar';
+
+            //insere o líder (pessoa que está logada)
+            insereMembroListaMembrosEquipe(localStorage.getItem('nomeDisplay'), pessoa.email, 'primary', false);
+
+            //Foco para o usuário digitar o nome da equipe
+            nomeEquipe.value = '';
+            nomeEquipe.focus();
+        }
+
+        function convidarMembroEquipe() {
+            //interação com o front
+            btnCarregando(true, btnConvidaMembroEquipe);
+
+            //Validação dos dados (no caso email)
+            deuErro = true;
+            if (emailMembroEquipe.value != '') {
+                var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (regex.test(emailMembroEquipe.value)) {
+                    deuErro = false;
+                    emailMembroEquipe.classList.remove("is-invalid");
+                } else {
+                    emailMembroEquipe.classList.add("is-invalid");
+                }
+
+                if (deuErro == false) {
+                    insereMembroListaMembrosEquipe(emailMembroEquipe.value, emailMembroEquipe.value, 'warning', true);
+                }
+            }
+
+
+            //Interação com o front
+            btnCarregando(false, btnConvidaMembroEquipe, 'Convidar');
+            emailMembroEquipe.value = '';
+            emailMembroEquipe.focus();
+        }
+
+        //Evento monitora pressionar do Enter
+        emailMembroEquipe.addEventListener("keydown", function (event) {
+            if (event.keyCode === 13) {
+                convidarMembroEquipe();
+            }
+        });
+
+        function carregaEditarEquipe(id, indexDataTable) {
+            //Armazenando o index da linha
+            idDataTableRow = indexDataTable;
+
+            //Zera o vetor
+            vetorMembrosEquipe = [];
+
+            //busca equipe pelo ID
+            idEquipeEquipe = id;
+            var dadosEditarEquipe = equipeJson.find(function (elemento) {
+                return elemento.id == id;
+            });
+
+            //Prepara o card
+            nomeEquipe.disabled = true;
+            btnsalvarEquipe.disabled = true;
+            emailMembroEquipe.disabled = true;
+            nomeEquipe.classList.remove("is-invalid");
+            abreCard(btnAbreCardEquipe, true);
+            listaMembrosEquipe.innerHTML = '';
+            nomeEquipe.value = dadosEditarEquipe.equipe;
+            tituloCardEquipe.innerHTML = 'Editar Equipe';
+            btnsalvarEquipe.innerHTML = 'Atualizar';
+
+            //insere o líder
+            var liderEquipe = false;
+            if (dadosEditarEquipe.lider.email == pessoa.email) {
+                liderEquipe = true;
+                nomeEquipe.disabled = false;
+                emailMembroEquipe.disabled = false;
+            }
+            insereMembroListaMembrosEquipe(dadosEditarEquipe.lider.nome, dadosEditarEquipe.lider.email, 'primary', false);
+            //insere os demais membros
+            dadosEditarEquipe.membros.forEach(function (equipe) {
+                btnX = false;
+                if (liderEquipe == true || pessoa.email == equipe.email) { btnX = true; liderEquipe = true; }
+                insereMembroListaMembrosEquipe(equipe.nome, equipe.email, equipe.tipo, btnX);
+            });
+
+            //Caso o lider do grupo seja o user logado ou o user logado esteja na equipe, btn salvar habilitado
+            if (liderEquipe == true) {
+                btnsalvarEquipe.disabled = false;
+            }
+
+            //Foco para o usuário digitar o nome da equipe
+            nomeEquipe.focus();
+        }
+
+        function insereMembroListaMembrosEquipe(titulo, email, tipo, botaoX) {
+            //insere no vetor
+            vetorMembrosEquipe.push({
+                'nome': titulo,
+                'email': email,
+                'tipo': tipo
+            });
+
+            //define a msg com base no tipo
             switch (tipo) {
                 case 'primary':
                     tipoMsg = 'Líder';
@@ -124,65 +232,99 @@
                     break;
             }
             if (botaoX) {
-                botaoX = '<div class="card-tools">  <button type="button" class="btn btn-tool" data-card-widget="remove"> <i class="fas fa-times"></i> </button> </div>';
+                botaoX = '<div class="card-tools">  <button type="button" class="btn btn-tool" data-card-widget="remove" onClick="removeMembroEquipe(\'' + email + '\');"> <i class="fas fa-times"></i> </button> </div>';
             } else { botaoX = ''; }
             const htmlBase = ' <div class="card card-widget collapsed-card"> <div class="card-header"> <div class="user-block"> <img class="img-circle" src="data:image/jpeg;base64,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"> <span class="username"><a href="#">' + titulo + '</a></span> <span class="description badge bg-' + tipo + '">' + tipoMsg + '</span> </div> ' + botaoX + ' </div> </div>';
             divlistaMembrosEquipe.innerHTML += htmlBase;
         }
-
-        function CriarEquipe() {
-
-            abreCard(btnAbreCardEquipe, true);
-
-            listaMembrosEquipe.innerHTML = '';
-
-            tituloCardEquipe.innerHTML = 'Criar Equipe';
-            btnSalvarEquipe.innerHTML = 'Salvar';
-
-            InsereMembroEquipe(localStorage.getItem('nomeDisplay'), 'primary', false);
-
-            nomeEquipe.focus();
-        }
-
-        function BtnAdicionaMembroEquipe() {
-
-            btnCarregando(true, btnConvidaMembroEquipe);
-
-            //Validação do email
-            deuErro = true;
-            if (emailMembroEquipe.value != '') {
-                var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (regex.test(emailMembroEquipe.value)) {
-                    deuErro = false;
-                    emailMembroEquipe.classList.remove("is-invalid");
-                } else {
-                    emailMembroEquipe.classList.add("is-invalid");
-                }
-
-                if (deuErro == false) {
-                    InsereMembroEquipe(emailMembroEquipe.value, 'warning', true);
+        function removeMembroEquipe(email) {
+            //Laço para localizar o membro a ser removido
+            for (let i = 0; i < vetorMembrosEquipe.length; i++) {
+                if (vetorMembrosEquipe[i].email == email) {
+                    vetorMembrosEquipe.splice(i, 1);
+                    break;//parar o laço
                 }
             }
-
-            btnCarregando(false, btnConvidaMembroEquipe, 'Convidar');
-            emailMembroEquipe.value = '';
-            emailMembroEquipe.focus();
         }
 
-        emailMembroEquipe.addEventListener("keydown", function (event) {
-            if (event.keyCode === 13) {
-                BtnAdicionaMembroEquipe();
+        function salvarEquipe() {
+            //validação dos dados
+            if (nomeEquipe.value == '') {
+                nomeEquipe.classList.add("is-invalid");
+                nomeEquipe.focus();
+                return; //interrompe a execução da função
             }
-        });
+            nomeEquipe.classList.remove("is-invalid");
+            btnsalvarEquipe.disabled = true;
+
+            //Submete os dados
+            var dadosSalvarEquipe = {
+                "id": idEquipeEquipe,
+                "equipe": nomeEquipe.value,
+                "lider": vetorMembrosEquipe.find(vetorMembrosEquipe => vetorMembrosEquipe.tipo == 'primary'),
+                "membros": vetorMembrosEquipe.filter(vetorMembrosEquipe => vetorMembrosEquipe.tipo != 'primary')
+            };
+
+            //verifica se equipe será criada ou atualizada
+            if (idEquipeEquipe == null) {
+                /*Criar*/
+                dadosSalvarEquipe.id = new Date().getTime(); //TEM QUE REMOVER QUANDO API ESTIVER FUNCIONANDO
+                equipeJson.push(dadosSalvarEquipe);
+            } else {
+                /* Atualizar */
+                // Encontrar o índice da equipe com base no ID
+                const index = equipeJson.findIndex(equipe => equipe.id === idEquipeEquipe);
+
+                // Verificar se o índice foi encontrado
+                if (index !== -1) {
+                    // Substituir a equipe com os novos dados
+                    equipeJson[index] = dadosSalvarEquipe;
+                }
+                
+            btnAbreCardEquipe.click();
+            return;
+            }
+
+            //Interação com o front
+            var table = $('#tbEquipes').DataTable();
+            var rowData = [
+                table.rows().count() + 1, // Número da linha
+                dadosSalvarEquipe.equipe // Nome da equipe
+            ];
+            var rowNode = table.row.add(rowData).draw().node();
+            // Adicionar evento onclick à linha
+            $(rowNode).click(function () {
+                var idEquipe = dadosSalvarEquipe.id;
+                //console.log("ID da equipe: " + idEquipe);
+                carregaEditarEquipe(idEquipe, table.row(this).index());
+            });
+            btnAbreCardEquipe.click();
+        }
 
         /* Deixa card aberto enquanto edito */
         document.querySelector('#equipes div.card-header button').click();
     </script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- DataTable -->
     <script>
         $(document).ready(function () {
-            var tbHistorico = $('#tbEquipes').DataTable({
+            $('#tbEquipes').DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
@@ -253,6 +395,155 @@
                     var btns = $('.btn-group');
                     btns.addClass('dropup');
                 }
+            });
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* DADOS FICTICIOS  */
+
+        $(document).ready(function () {
+            equipeJson = [
+                {
+                    "id": 1020,
+                    "equipe": "DEV",
+                    "lider": {
+                        "nome": "Fulano da Silva",
+                        "email": "fulano@email.com",
+                        "tipo": "primary"
+                    },
+                    "membros": [
+                        {
+                            "nome": "fulano@email.com",
+                            "email": "fulano@email.com",
+                            "tipo": "warning"
+                        },
+                        {
+                            "nome": "cicrano@email.com",
+                            "email": "cicrano@email.com",
+                            "tipo": "warning"
+                        }
+                    ]
+                },
+                {
+                    "id": 2001,
+                    "equipe": "Marketing",
+                    "lider": {
+                        "nome": "Ana Souza",
+                        "email": "ana.souza@email.com",
+                        "tipo": "primary"
+                    },
+                    "membros": [
+                        {
+                            "nome": "Carlos Santos",
+                            "email": "carlos.santos@email.com",
+                            "tipo": "warning"
+                        },
+                        {
+                            "nome": "Mariana Oliveira",
+                            "email": "mariana.oliveira@email.com",
+                            "tipo": "warning"
+                        },
+                        {
+                            "nome": "Pedro Silva",
+                            "email": "pedro.silva@email.com",
+                            "tipo": "warning"
+                        }
+                    ]
+                },
+                {
+                    "id": 2002,
+                    "equipe": "Vendas",
+                    "lider": {
+                        "nome": "Rafaela Mendes",
+                        "email": "rafaela.mendes@email.com",
+                        "tipo": "primary"
+                    },
+                    "membros": [
+                        {
+                            "nome": "Gabriel Almeida",
+                            "email": "gabriel.almeida@email.com",
+                            "tipo": "warning"
+                        },
+                        {
+                            "nome": "Larissa Santos",
+                            "email": "larissa.santos@email.com",
+                            "tipo": "warning"
+                        },
+                        {
+                            "nome": "Fernando Costa",
+                            "email": "fernando.costa@email.com",
+                            "tipo": "warning"
+                        }
+                    ]
+                },
+                {
+                    "id": 2003,
+                    "equipe": "Suporte Técnico",
+                    "lider": {
+                        "nome": "Rodrigo Oliveira",
+                        "email": "rodrigo.oliveira@email.com",
+                        "tipo": "primary"
+                    },
+                    "membros": [
+                        {
+                            "nome": "Isabela Mendonça",
+                            "email": "isabela.mendonca@email.com",
+                            "tipo": "secondary"
+                        },
+                        {
+                            "nome": "Ricardo Barbosa",
+                            "email": "ricardo.barbosa@email.com",
+                            "tipo": "danger"
+                        },
+                        {
+                            "nome": "juliana.ferreira@email.com",
+                            "email": "juliana.ferreira@email.com",
+                            "tipo": "warning"
+                        },
+                        {
+                            "nome": "Jairo Miranda",
+                            "email": "jairo17.mb@gmail.com",
+                            "tipo": "secondary"
+                        }
+                    ]
+                }
+            ];
+
+
+
+
+            // Inicializar o DataTable
+            var table = $('#tbEquipes').DataTable();
+
+            // Adicionar cada equipe como uma linha no DataTable
+            equipeJson.forEach(function (equipe, index) {
+                var rowData = [
+                    index + 1, // Número da linha
+                    equipe.equipe // Nome da equipe
+                ];
+                var rowNode = table.row.add(rowData).draw().node();
+
+                // Adicionar evento onclick à linha
+                $(rowNode).click(function () {
+                    var idEquipe = equipe.id;
+                    //console.log("ID da equipe: " + idEquipe);
+                    carregaEditarEquipe(idEquipe, table.row(this).index());
+                });
             });
         });
     </script>

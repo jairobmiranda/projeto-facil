@@ -1,0 +1,7 @@
+.tabelaLink tr{
+	 cursor:pointer;
+}
+.tabelaLink tbody tr:hover{
+	 cursor:pointer;
+	 background-color:#007bff20;
+}

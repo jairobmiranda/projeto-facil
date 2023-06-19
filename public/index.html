@@ -24,17 +24,6 @@
 
 <body class="hold-transition sidebar-mini">
   <script>
-    // Verifica login
-    /*
-    document.addEventListener('DOMContentLoaded', function () {
-      var loggedIn = localStorage.getItem('loggedIn');
-      if (loggedIn != 'true') {
-        // Não há sessão, redirecionar para o login.html
-        window.location.assign('login.html');
-      }
-    });
-*/
-
     if (localStorage.getItem('user')) {
       pessoa = JSON.parse(localStorage.getItem('user'));
 
